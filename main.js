@@ -1,6 +1,6 @@
 function getComputerChoice() {
     /**
-     * Randomly, return one of the three possible values between Rock, Paper 
+     * Randomly, return one of the three possible values between Rock, Paper
      * and Scissors.
      * This result represent the computer selection.
      */
@@ -13,11 +13,13 @@ function getComputerChoice() {
 function capitalize(str) {
     /**
      * Capitalize a String (str). Return a new string which its first word is
-     * capitalized and the rest of the initial string is concatenated as 
+     * capitalized and the rest of the initial string is concatenated as
      * lowercase.
      * It's included only for printing and formatting purposes.
      */
-    return str[0].toUpperCase() + str.slice(1).toLowerCase();
+    return str.length > 1
+        ? str[0].toUpperCase() + str.slice(1).toLowerCase()
+        : " ";
 }
 
 function playRound(userChoice, computerChoice) {
@@ -76,20 +78,19 @@ function game() {
     let userChoice = "";
 
     // String variable to save the result of the playRound function.
-    let resultRound = "";
+    let roundResult = "";
 
-
-    while (userScore < 3 && computerScore < 3) {
+    while (userScore < maxWinningRounds && computerScore < maxWinningRounds) {
         userChoice = prompt("Select your movement: ");
-        resultRound = playRound(userChoice, getComputerChoice());
-        console.log(resultRound);
+        roundResult = playRound(userChoice, getComputerChoice());
+        console.log(roundResult);
 
-    // Check the fourth char of the string to determine who won the round and
-    // add one point to the respective score counter.
-        if (resultRound[4] == "w") {
+        // Check the fourth char of the string to determine who won the round and
+        // add one point to the respective score counter.
+        if (roundResult[4] == "w") {
             userScore++;
         }
-        if (resultRound[4] == "l") {
+        if (roundResult[4] == "l") {
             computerScore++;
         }
     }
@@ -98,4 +99,3 @@ function game() {
     console.log("PC: " + computerScore);
 }
 
-game();
