@@ -54,24 +54,26 @@ function playRound(userChoice, computerChoice) {
      * Update global variables for printing them on the Interface
      * Add +1 to the winning-round player score and check the score
      */
+
+    // Check the current score to know whether the game should be playable or not.
     if (checkScore()) return;
 
     const tieMsg = "Tie!";
     const winMsg = "You won this round!";
     const pcWinMsg = "Machines won the round!";
 
-    // Pick the correct class image to update the interface
+    // Print the weapon (string) and Pick the correct class image to update
+    // the interface
     cleanImgClasses();
+    cleanBorder();
     userWeaponImg.classList.add(getClassImage(userChoice));
     pcWeaponImg.classList.add(getClassImage(computerChoice));
 
     userWeaponText.innerHTML = capitalize(userChoice);
     pcWeaponText.innerHTML = capitalize(computerChoice);
 
-    // The comparison is made parsing the userChoice to lowercase.
     // The tie and wining case scenarios are evaluated to return the respective
-    // result message, otherwise (including different random user inputs) return
-    // the youLose message.
+    //  message, otherwise return pcWinMsg.
     if (userChoice == computerChoice) {
         console.log(tieMsg);
         subtitle.innerHTML = tieMsg;
@@ -85,6 +87,8 @@ function playRound(userChoice, computerChoice) {
     ) {
         console.log(winMsg);
         subtitle.innerHTML = winMsg;
+        userWeaponImg.classList.add("border-win");
+        pcWeaponImg.classList.add("border-loss");
         userScore++;
         score.innerHTML = "Player: " + userScore + " - Machines: " + pcScore;
         checkScore();
@@ -93,6 +97,8 @@ function playRound(userChoice, computerChoice) {
 
     console.log(pcWinMsg);
     subtitle.innerHTML = pcWinMsg;
+    pcWeaponImg.classList.add("border-win");
+    userWeaponImg.classList.add("border-loss");
     pcScore++;
     score.innerHTML = "Player: " + userScore + " - Machines: " + pcScore;
     checkScore();
@@ -106,20 +112,30 @@ function checkScore() {
      */
 
     if (userScore >= maxPoints || pcScore >= maxPoints) {
-        // removeEventListeners();
+        cleanImgClasses();
+        cleanBorder();
 
         if (userScore > pcScore) {
             subtitle.innerHTML = "Congrats! You've beaten the machines!";
             userWeaponText.innerHTML = "Winner!";
             pcWeaponText.innerHTML = "Beaten!";
+            userWeaponImg.classList.add("img-user-win", "border-win");
+            pcWeaponImg.classList.add("img-pc-loss", "border-loss");
         } else {
             subtitle.innerHTML = "You've lost against the machines!";
             userWeaponText.innerHTML = "Beaten!";
             pcWeaponText.innerHTML = "Winner!";
+            pcWeaponImg.classList.add("img-pc-win", "border-win");
+            userWeaponImg.classList.add("img-user-loss", "border-loss");
         }
         return true;
     }
     return false;
+}
+
+function cleanBorder() {
+    userWeaponImg.classList.remove("border-win", "border-loss");
+    pcWeaponImg.classList.remove("border-win", "border-loss");
 }
 
 function cleanImgClasses() {
@@ -127,13 +143,25 @@ function cleanImgClasses() {
         "img-rock",
         "img-paper",
         "img-scissors",
-        "img-rps"
+        "img-pc",
+        "img-rps",
+        "img-user-win",
+        "img-user-loss",
+        "img-pc-win",
+        "img-pc-loss"
     );
     pcWeaponImg.classList.remove(
         "img-rock",
         "img-paper",
         "img-scissors",
-        "img-pc"
+        "img-pc",
+        "img-rps",
+        "img-user-win",
+        "img-user-loss",
+        "img-pc-win",
+        "img-pc-loss",
+        "border-win",
+        "border-loss"
     );
 }
 
@@ -148,11 +176,13 @@ function resetGame() {
     pcScore = 0;
     subtitle.innerHTML = "Pick your Weapon!";
     cleanImgClasses();
+    cleanBorder();
     userWeaponImg.classList.add("img-rps");
     pcWeaponImg.classList.add("img-pc");
     userWeaponText.innerHTML = "";
     pcWeaponText.innerHTML = "";
-    score.innerHTML = '<a href="https://github.com/nico9506/">nico9506</a>';
+    score.innerHTML =
+        '<i class="fa-brands fa-github"></i> <a href="https://github.com/nico9506/" target="_blank">nico9506</a>';
 }
 
 // Initialize the game
